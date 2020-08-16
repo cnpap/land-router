@@ -1,0 +1,21 @@
+{
+    "name": "justlikesuolong/land-router",
+    "description": "psr15 规范下的最小路由器",
+    "keywords": [
+        "router"
+    ],
+    "license": "MIT",
+    "require": {
+        "justlikesuolong/land15": "^1.0",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.3",
+        "guzzlehttp/psr7": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "LandRouter\\": ""
+        }
+    }
+}
