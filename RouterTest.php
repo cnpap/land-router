@@ -26,7 +26,7 @@ class RouterTest extends TestCase
                 Process1::class,
                 Process2::class
             ],
-            'prefix' => 'prefix'
+            'prefix'     => 'prefix'
         ], function (Router $router) {
             $router->get('/some/path/', RequestHandle::class);
             $router->post('some/path/', RequestHandle::class);
@@ -51,10 +51,7 @@ class RouterTest extends TestCase
     {
         $router = new Router();
         $router->get('/', RequestHandle::class);
-        $handle = new Handle([
-            Process1::class,
-            $router
-        ]);
+        $handle   = new Handle([Process1::class, $router]);
         $expected = json_encode(['process1' => 'pass']);
         $this->assertEquals($expected, $handle->handle(new ServerRequest('GET', '/'))->getBody()->getContents());
     }

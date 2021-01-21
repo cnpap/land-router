@@ -4,8 +4,8 @@ namespace LandRouter;
 
 use Closure;
 use Land15\Handle;
-use LandRouter\Exception\GroupParamException;
-use LandRouter\Exception\RouteNotFoundException;
+use LandRouter\Exception\Invalid;
+use LandRouter\Exception\Undefined;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -13,25 +13,24 @@ use Psr\Http\Server\RequestHandlerInterface;
 class Router implements RequestHandlerInterface
 {
     protected $attributes = [];
-
-    protected $routes = [];
+    protected $routes     = [];
 
     function handle(ServerRequestInterface $request): ResponseInterface
     {
         $route = $this->routes[$request->getMethod() . $request->getUri()->getPath()] ?? null;
         if (is_null($route)) {
-            throw new RouteNotFoundException();
+            throw new Undefined();
         }
-        $processes = $route['middleware'];
+        $processes   = $route['middleware'];
         $processes[] = $route['handle'];
-        $handle = new Handle($processes);
+        $handle      = new Handle($processes);
         return $handle->handle($request);
     }
 
     function group(array $newAttributes, Closure $next)
     {
         if (count(array_diff(array_keys($newAttributes), ['middleware', 'prefix']))) {
-            throw new GroupParamException();
+            throw new Invalid();
         }
         if ($this->attributes) {
             $lastAttributes = end($this->attributes);
@@ -56,8 +55,8 @@ class Router implements RequestHandlerInterface
         if (isset($lastAttribute['prefix'])) {
             $url = $lastAttribute['prefix'] . '/' . trim($url, '/');
         }
-        $url = '/' . trim($url, '/');
-        $middleware = $lastAttribute['middleware'] ?? [];
+        $url                          = '/' . trim($url, '/');
+        $middleware                   = $lastAttribute['middleware'] ?? [];
         $this->routes[$method . $url] = compact('method', 'url', 'middleware', 'handle');
     }
 

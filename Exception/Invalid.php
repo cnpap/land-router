@@ -4,7 +4,7 @@ namespace LandRouter\Exception;
 
 use InvalidArgumentException;
 
-class GroupParamException extends InvalidArgumentException
+class Invalid extends InvalidArgumentException
 {
 
 }

@@ -4,7 +4,7 @@ namespace LandRouter\Exception;
 
 use RuntimeException;
 
-class RouteNotFoundException extends RuntimeException
+class Undefined extends RuntimeException
 {
 
 }
